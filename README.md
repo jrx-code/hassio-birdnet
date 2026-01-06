@@ -2,6 +2,10 @@
 
 This project integrates [BirdNET-Go](https://github.com/tphakala/birdnet-go) with **Home Assistant** using MQTT. It analyzes audio from RTSP streams (e.g., IP cameras) to automatically recognize bird species and sends the detection data (species name, scientific name, confidence, image) to Home Assistant sensors.
 
+## 🎥 Preview
+
+![Preview](images/preview.png)
+
 ## 📂 Project Structure
 
 ```text
