@@ -1,0 +1,13 @@
+type: markdown
+card_mod:
+  style: |
+    ha-card {
+    height: 234px !important;
+    overflow: hidden !important;
+    }
+content: >
+  {{ state_attr('sensor.birdnet_go', 'time') }} : **{{
+  states('sensor.birdnet_go') }}**  {{ state_attr('sensor.birdnet_go',
+  'scientific_name') }} <img src="{{ state_attr('sensor.birdnet_go',
+  'image_url') }}"/>
+

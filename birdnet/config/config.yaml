@@ -1,0 +1,336 @@
+debug: false
+main:
+    name: BirdNET-Go
+    timeas24h: true
+    log:
+        enabled: true
+        path: birdnet.log
+        rotation: daily
+        maxsize: 1048576
+        rotationday: Sunday
+birdnet:
+    debug: false
+    sensitivity: 1
+    threshold: 0.8
+    overlap: 2.7
+# Replace data with your location
+    longitude: 0.000000
+    latitude: 0.000000
+    threads: 2
+    locale: en
+    rangefilter:
+        debug: false
+        model: latest
+        modelpath: ""
+        threshold: 0.01
+    usexnnpack: true
+realtime:
+    interval: 15
+    processingtime: false
+    audio:
+        source: ""
+        ffmpegpath: /usr/bin/ffmpeg
+        soxpath: /usr/bin/sox
+        streamtransport: sse
+        export:
+            debug: false
+            enabled: true
+            path: clips/
+            type: flac
+            bitrate: 96k
+            retention:
+                debug: false
+                policy: age
+                maxage: 30d
+                maxusage: 70%
+                minclips: 10
+                keepspectrograms: true
+                checkinterval: 0
+            length: 15
+            precapture: 3
+            gain: 0
+            normalization:
+                enabled: false
+                targetlufs: -23
+                loudnessrange: 7
+                truepeak: -2
+        soundlevel:
+            enabled: false
+            interval: 10
+            debug: false
+            debug_realtime_logging: false
+        useaudiocore: false
+        equalizer:
+            enabled: false
+            filters:
+                - type: HighPass
+                  frequency: 100
+                  q: 0.1
+                  gain: 0
+                  width: 0
+                  passes: 0
+                - type: LowPass
+                  frequency: 15000
+                  q: 0.1
+                  gain: 0
+                  width: 0
+                  passes: 0
+    dashboard:
+        thumbnails:
+            debug: false
+            summary: true
+            recent: true
+            imageprovider: wikimedia
+            fallbackpolicy: all
+        summarylimit: 30
+        locale: en
+        newui: true
+        spectrogram:
+            mode: auto
+            enabled: false
+            size: sm
+            raw: true
+    dynamicthreshold:
+        enabled: true
+        debug: false
+        trigger: 0.9
+        min: 0.2
+        validhours: 24
+    log:
+        enabled: false
+        path: birdnet.txt
+    logdeduplication:
+        enabled: false
+        healthcheckintervalseconds: 0
+    birdweather:
+        enabled: true
+        debug: false
+# Replace with your ID
+        id: your-id
+        threshold: 0.7
+        locationaccuracy: 500
+        retrysettings:
+            enabled: true
+            maxretries: 3
+            initialdelay: 30
+            maxdelay: 600
+            backoffmultiplier: 2
+    ebird:
+        enabled: false
+        apikey: ""
+        cachettl: 24
+        locale: en
+    privacyfilter:
+        debug: false
+        enabled: true
+        confidence: 0.05
+    dogbarkfilter:
+        debug: false
+        enabled: true
+        confidence: 0.1
+        remember: 5
+        species: []
+    rtsp:
+        transport: udp
+        urls:
+# Add your list of video streams
+            - rtsp://address:port/path1
+            - rtsp://address:port/path2
+        health:
+            healthydatathreshold: 60
+            monitoringinterval: 30
+        ffmpegparameters: []
+    mqtt:
+        enabled: true
+        debug: false
+# Replace with your mqtt address
+	broker: tcp://your-mqtt-broker
+        topic: birdnet
+# Replace with your credentials
+	username: username
+	password: password
+        retain: true
+        retrysettings:
+            enabled: true
+            maxretries: 3
+            initialdelay: 10
+            maxdelay: 300
+            backoffmultiplier: 2
+        tls:
+            enabled: false
+            insecureskipverify: false
+    telemetry:
+        enabled: false
+        listen: 0.0.0.0:8090
+    monitoring:
+        enabled: true
+        checkinterval: 60
+        criticalresendinterval: 30
+        hysteresispercent: 5
+        cpu:
+            enabled: true
+            warning: 85
+            critical: 95
+        memory:
+            enabled: true
+            warning: 85
+            critical: 95
+        disk:
+            enabled: true
+            warning: 85
+            critical: 95
+            paths:
+                - /
+                - /data
+                - /data/clips
+                - /home/birdnet/.config/birdnet-go
+                - /config
+    species:
+        include: []
+        exclude: []
+        config: {}
+    weather:
+        provider: openweather
+        pollinterval: 60
+        debug: false
+        openweather:
+            enabled: true
+# Replace with your API-key
+	    apikey: your-api-key
+            endpoint: https://api.openweathermap.org/data/2.5/weather
+            units: metric
+            language: pl
+        wunderground:
+            apikey: ""
+            stationid: ""
+            endpoint: https://api.weather.com/v2/pws/observations/current
+            units: m
+    speciestracking:
+        enabled: true
+        newspecieswindowdays: 7
+        syncintervalminutes: 60
+        notificationsuppressionhours: 168
+        yearlytracking:
+            enabled: true
+            resetmonth: 1
+            resetday: 1
+            windowdays: 7
+        seasonaltracking:
+            enabled: true
+            windowdays: 7
+            seasons:
+                fall:
+                    startmonth: 9
+                    startday: 22
+                spring:
+                    startmonth: 3
+                    startday: 20
+                summer:
+                    startmonth: 6
+                    startday: 21
+                winter:
+                    startmonth: 12
+                    startday: 21
+webserver:
+    debug: false
+    enabled: true
+    port: "8080"
+    log:
+        enabled: false
+        path: webui.log
+        rotation: daily
+        maxsize: 1048576
+        rotationday: "0"
+    livestream:
+        debug: false
+        bitrate: 128
+        samplerate: 48000
+        segmentlength: 2
+        ffmpegloglevel: warning
+security:
+    debug: true
+    host: birdnet
+    autotls: false
+    redirecttohttps: true
+    allowsubnetbypass:
+        enabled: false
+        subnet: ""
+    basicauth:
+        enabled: false
+        password: ""
+        clientid: ""
+        clientsecret: 
+        redirecturi: ""
+        authcodeexp: 10m0s
+        accesstokenexp: 1h0m0s
+    googleauth:
+        enabled: false
+        clientid: ""
+        clientsecret: ""
+        redirecturi: ""
+        userid: ""
+    githubauth:
+        enabled: false
+        clientid: ""
+        clientsecret: ""
+        redirecturi: ""
+        userid: ""
+    sessionsecret:
+    sessionduration: 168h0m0s
+sentry:
+    enabled: false
+    debug: false
+output:
+    file: {}
+    sqlite:
+        enabled: true
+        path: birdnet.db
+    mysql:
+        enabled: false
+        username: birdnet
+        password: secret
+        database: birdnet
+        host: localhost
+        port: "3306"
+backup:
+    enabled: false
+    debug: false
+    encryption: false
+    encryption_key: ""
+    sanitize_config: false
+    retention:
+        maxage: ""
+        maxbackups: 0
+        minbackups: 0
+    targets: []
+    schedules: []
+    operationtimeouts:
+        backup: 0s
+        store: 0s
+        cleanup: 0s
+        delete: 0s
+notification:
+    push:
+        enabled: false
+        defaulttimeout: 30s
+        maxretries: 3
+        retrydelay: 5s
+        circuitbreaker:
+            enabled: true
+            maxfailures: 5
+            timeout: 30s
+            halfopenmaxrequests: 1
+        healthcheck:
+            enabled: true
+            interval: 1m0s
+            timeout: 10s
+        ratelimiting:
+            enabled: false
+            requestsperminute: 60
+            burstsize: 10
+        providers: []
+    templates:
+        newspecies:
+            title: 'New Species: {{.CommonName}}'
+            message: "{{.ImageURL}}\n\nFirst detection of {{.CommonName}} ({{.ScientificName}}) with {{.ConfidencePercent}}% confidence at {{.DetectionTime}}. \n{{.DetectionURL}}"
+

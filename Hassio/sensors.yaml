@@ -1,0 +1,22 @@
+mqtt:
+  sensor:
+    - name: "BirdNET Go"
+      unique_id: birdnet_go
+      state_topic: "birdnet"
+      # Sets sensor state based on Common Name
+      value_template: "{{ value_json.CommonName }}"
+      # Same topic is used to retrieve attributes
+      json_attributes_topic: "birdnet"
+      # Template to extract remaining data as attributes
+      json_attributes_template: >
+        {{
+          {
+            "scientific_name": value_json.ScientificName,
+            "confidence": (value_json.Confidence * 100) | round(0),
+            "date": value_json.Date,
+            "time": value_json.Time[:5],
+            "image_url": value_json.BirdImage.URL,
+            "camera": value_json.Source.safeString,
+          } | to_json
+        }}
+

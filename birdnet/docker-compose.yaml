@@ -1,0 +1,24 @@
+services:
+  birdnet-go:
+    image: ghcr.io/tphakala/birdnet-go:nightly
+    container_name: birdnet-go
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8085}:8080"
+    environment:
+      - TZ=Europe/Warsaw
+      - BIRDNET_UID=${BIRDNET_UID:-1000}
+      - BIRDNET_GID=${BIRDNET_GID:-1000}
+    volumes:
+      - ./config:/config
+      - ./data:/data
+    tmpfs:
+      - /config/hls:exec,size=150M,uid=${BIRDNET_UID:-1000},gid=${BIRDNET_GID:-1000},mode=0755
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+volumes:
+  config:
+    driver: local
+  data:
+    driver: local
+
